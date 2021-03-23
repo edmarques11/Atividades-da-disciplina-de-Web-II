@@ -17,10 +17,14 @@ body {
 }
 </style>
 `
+const routes = {
+  home: "/",
+  next: "/next"
+}
 
 const server = http.createServer((request, response) => {
   response.writeHead(200, { 'Content-Type': "text-html" });
-  if (request.url === '/') {
+  if (request.url === routes.home && request.method === "GET") {
     response.statusCode = 200
     response.write(`
       ${style}
@@ -30,7 +34,7 @@ const server = http.createServer((request, response) => {
         console.log('%cRoute: %c"/"', 'color: green', 'color: red')
       </Script>
       `);
-  } else if (request.url === '/next') {
+  } else if (request.url === routes.next && request.method === "GET") {
     response.statusCode = 200
     response.write(`
       ${style}
