@@ -1,6 +1,6 @@
 const http = require("http");
 
-const PORT = 3000
+const PORT = 3000;
 const style = `
 <style>
 * {
@@ -16,16 +16,15 @@ body {
   justify-content: center;
 }
 </style>
-`
+`;
 const routes = {
   home: "/",
-  next: "/next"
-}
+  next: "/next",
+};
 
 const server = http.createServer((request, response) => {
-  response.writeHead(200, { 'Content-Type': "text-html" });
   if (request.url === routes.home && request.method === "GET") {
-    response.statusCode = 200
+    response.writeHead(200, { "Content-Type": "text-html" });
     response.write(`
       ${style}
       <h1>Hello world</h1>
@@ -35,7 +34,7 @@ const server = http.createServer((request, response) => {
       </Script>
       `);
   } else if (request.url === routes.next && request.method === "GET") {
-    response.statusCode = 200
+    response.writeHead(200, { "Content-Type": "text-html" });
     response.write(`
       ${style}
       <h1>Page 2</h1>
@@ -45,7 +44,7 @@ const server = http.createServer((request, response) => {
       </Script>
       `);
   } else {
-    response.statusCode = 400
+    response.writeHead(404, { "Content-Type": "text-html" });
     response.write(`
       ${style}
       <h1>ERROR</h1>
@@ -53,9 +52,9 @@ const server = http.createServer((request, response) => {
       <Script>
         console.error('%cRoute: %c"${request.url}" %cnot exists!', 'color: green', 'color: red', 'color: green')
       </Script>
-    `)
+    `);
   }
   response.end();
-})
+});
 
 server.listen(PORT, console.log("Server is running..."));
