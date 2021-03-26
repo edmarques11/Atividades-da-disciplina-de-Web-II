@@ -18,7 +18,7 @@ const data = {
 };
 
 app.get("/users", (request, response) => {
-  return response.status(201).json(data.users);
+  return response.status(200).json(data.users);
 });
 
 app.get("/users/:id", (request, response) => {
@@ -27,7 +27,7 @@ app.get("/users/:id", (request, response) => {
   const indexId = data.users.findIndex((user) => user.id === id);
 
   if (indexId >= 0) {
-    return response.status(201).json(data.users[indexId]);
+    return response.status(200).json(data.users[indexId]);
   } else {
     return response.status(400).json({ error: "user not exists!" });
   }
@@ -51,17 +51,38 @@ app.post("/users", (request, response) => {
     const newUser = { id, name };
     data.users.push(newUser);
 
-    return response.status(200).json(newUser);
+    return response.status(201).json(newUser);
   } else {
     return response.status(400).json({ error: "Insert an user name!" });
   }
 });
 
 app.put("/users/:id", (request, response) => {
-  const { id } = request.body;
+  let { id } = request.params;
+  const { name } = request.body;
 
-  if (id) {
-    // terminar
+  if (name) {
+    const indexId = data.users.findIndex((user) => user.id === Number(id));
+    if (indexId >= 0) {
+      data.users[indexId].name = name;
+      return response.status(200).json(data.users[indexId]);
+    } else {
+      return response.status(400).json({ error: "User not found!" });
+    }
+  } else {
+    return response.status(400).json({ error: "Insert an user name!" });
+  }
+});
+
+app.delete("/users/:id", (request, response) => {
+  let { id } = request.params;
+
+  const indexId = data.users.findIndex((user) => user.id === Number(id));
+  if (indexId >= 0) {
+    data.users.splice(indexId, 1);
+    return response.status(200).json({ message: "User deleted!" });
+  } else {
+    return response.status(400).json({ message: "User not found!" });
   }
 });
 
